@@ -1,0 +1,43 @@
+
+<div>
+    <h2><span data-translate="trafficanalyzerApp.videoLine.detail.title">Video Line</span> {{vm.videoLine.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="trafficanalyzerApp.videoLine.name">Name</span></dt>
+        <dd>
+            <span>{{vm.videoLine.name}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalyzerApp.videoLine.startPointX">Start Point X</span></dt>
+        <dd>
+            <span>{{vm.videoLine.startPointX}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalyzerApp.videoLine.startPointY">Start Point Y</span></dt>
+        <dd>
+            <span>{{vm.videoLine.startPointY}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalyzerApp.videoLine.endPointX">End Point X</span></dt>
+        <dd>
+            <span>{{vm.videoLine.endPointX}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalyzerApp.videoLine.endPointY">End Point Y</span></dt>
+        <dd>
+            <span>{{vm.videoLine.endPointY}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalyzerApp.videoLine.video">Video</span></dt>
+        <dd>
+            <a ui-sref="video-detail({id:vm.videoLine.video.id})">{{vm.videoLine.video.id}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="video-line-detail.edit({id:vm.videoLine.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

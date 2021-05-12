@@ -4,9 +4,9 @@
         .module('trafficanalyzerApp')
         .factory('Record', Record);
 
-    Record.$inject = ['$resource'];
+    Record.$inject = ['$resource', 'DateUtils'];
 
-    function Record ($resource) {
+    function Record ($resource, DateUtils) {
         var resourceUrl =  'api/records/:id';
 
         return $resource(resourceUrl, {}, {
@@ -16,6 +16,7 @@
                 transformResponse: function (data) {
                     if (data) {
                         data = angular.fromJson(data);
+                        data.insertDate = DateUtils.convertDateTimeFromServer(data.insertDate);
                     }
                     return data;
                 }

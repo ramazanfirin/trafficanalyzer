@@ -125,13 +125,4 @@ public class RecordResource {
         recordRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-    
-    
-    @GetMapping("/records/getDetailsReport/{id}")
-    @Timed
-    public ResponseEntity<Record> getDetailsReport(@PathVariable Long id,Pageable pageable) {
-        log.debug("REST request to get Record : {}", id);
-        Record record = recordRepository.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(record));
-    }
 }

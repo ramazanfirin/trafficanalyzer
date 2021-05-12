@@ -11,7 +11,7 @@
     "fields": [
         {
             "fieldName": "insertDate",
-            "fieldType": "String",
+            "fieldType": "Instant",
             "fieldValidateRules": [
                 "required"
             ]

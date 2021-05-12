@@ -12,6 +12,8 @@
 
         vm.record = entity;
         vm.clear = clear;
+        vm.datePickerOpenStatus = {};
+        vm.openCalendar = openCalendar;
         vm.save = save;
         vm.lines = Line.query();
 
@@ -42,6 +44,10 @@
             vm.isSaving = false;
         }
 
+        vm.datePickerOpenStatus.insertDate = false;
 
+        function openCalendar (date) {
+            vm.datePickerOpenStatus[date] = true;
+        }
     }
 })();

@@ -22,16 +22,37 @@ entity Line{
 }
 
 entity Record{
-	insertDate String required
+	insertDate Instant required
 	vehicleType String required
 }
 
+entity VideoLine{
+	name String
+	startPointX Long
+	startPointY Long
+	endPointX Long
+	endPointY Long
+}
+
+entity Video{
+	path String required
+	name String required
+	processDate Instant
+}
+
+entity VideoRecord{
+	insertDate Instant required
+	vehicleType String required
+}
 
 relationship ManyToOne {
   Location{district} to District
   Camera{location} to Location
   Line{camera} to Camera
   Record{line} to Line
+
+  VideoLine{video} to Video
+  VideoRecord{videoLine} to VideoLine
 }
 
 
@@ -40,4 +61,6 @@ paginate Location with pagination
 paginate Camera with pagination
 paginate Record with pagination
 paginate Line with pagination
-
+paginate Video with pagination
+paginate VideoLine with pagination
+paginate VideoRecord with pagination

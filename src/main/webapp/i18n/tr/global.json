@@ -12,6 +12,10 @@
                 "camera": "Kameralar",
                 "line": "Çizgiler",
                 "record": "Kayıtlar",
+                "record": "Record",
+                "videoLine": "Video Line",
+                "video": "Video",
+                "videoRecord": "Video Record",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

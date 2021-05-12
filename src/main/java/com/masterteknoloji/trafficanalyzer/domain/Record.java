@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -25,7 +26,7 @@ public class Record implements Serializable {
 
     @NotNull
     @Column(name = "insert_date", nullable = false)
-    private String insertDate;
+    private Instant insertDate;
 
     @NotNull
     @Column(name = "vehicle_type", nullable = false)
@@ -43,16 +44,16 @@ public class Record implements Serializable {
         this.id = id;
     }
 
-    public String getInsertDate() {
+    public Instant getInsertDate() {
         return insertDate;
     }
 
-    public Record insertDate(String insertDate) {
+    public Record insertDate(Instant insertDate) {
         this.insertDate = insertDate;
         return this;
     }
 
-    public void setInsertDate(String insertDate) {
+    public void setInsertDate(Instant insertDate) {
         this.insertDate = insertDate;
     }
 

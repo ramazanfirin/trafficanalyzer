@@ -28,7 +28,7 @@
             <tbody>
                 <tr ng-repeat="record in vm.records track by record.id">
                     <td><a ui-sref="record-detail({id:record.id})">{{record.id}}</a></td>
-                    <td>{{record.insertDate}}</td>
+                    <td>{{record.insertDate | date:'medium'}}</td>
                     <td>{{record.vehicleType}}</td>
                     <td>
                         <a ui-sref="line-detail({id:record.line.id})">{{record.line.id}}</a>

@@ -1,0 +1,26 @@
+{
+    "trafficanalyzerApp": {
+        "videoLine" : {
+            "home": {
+                "title": "Video Lines",
+                "createLabel": "Create a new Video Line",
+                "createOrEditLabel": "Create or edit a Video Line"
+            },
+            "created": "A new Video Line is created with identifier {{ param }}",
+            "updated": "A Video Line is updated with identifier {{ param }}",
+            "deleted": "A Video Line is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Video Line {{ id }}?"
+            },
+            "detail": {
+                "title": "Video Line"
+            },
+            "name": "Name",
+            "startPointX": "Start Point X",
+            "startPointY": "Start Point Y",
+            "endPointX": "End Point X",
+            "endPointY": "End Point Y",
+            "video": "Video"
+        }
+    }
+}

@@ -21,6 +21,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static com.masterteknoloji.trafficanalyzer.web.rest.TestUtil.createFormattingConversionService;
@@ -38,8 +40,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = TrafficanalyzerApp.class)
 public class RecordResourceIntTest {
 
-    private static final String DEFAULT_INSERT_DATE = "AAAAAAAAAA";
-    private static final String UPDATED_INSERT_DATE = "BBBBBBBBBB";
+    private static final Instant DEFAULT_INSERT_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_INSERT_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final String DEFAULT_VEHICLE_TYPE = "AAAAAAAAAA";
     private static final String UPDATED_VEHICLE_TYPE = "BBBBBBBBBB";

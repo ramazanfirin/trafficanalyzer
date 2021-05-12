@@ -2,9 +2,9 @@
     "trafficanalyzerApp": {
         "record" : {
             "home": {
-                "title": "Kayıtlar",
-                "createLabel": "Yeni Kayıt Oluştur",
-                "createOrEditLabel": "Yeni Kayıt Oluştur"
+                "title": "Records",
+                "createLabel": "Create a new Record",
+                "createOrEditLabel": "Create or edit a Record"
             },
             "created": "A new Record is created with identifier {{ param }}",
             "updated": "A Record is updated with identifier {{ param }}",
