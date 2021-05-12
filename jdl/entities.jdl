@@ -1,0 +1,43 @@
+entity District{
+	name String required
+}
+
+entity Location{
+	name String required
+}
+
+entity Camera{
+	name String
+	ip String
+	port String
+	connectionUrl String
+}
+
+entity Line{
+	name String
+	startPointX Long
+	startPointY Long
+	endPointX Long
+	endPointY Long
+}
+
+entity Record{
+	insertDate String required
+	vehicleType String required
+}
+
+
+relationship ManyToOne {
+  Location{district} to District
+  Camera{location} to Location
+  Line{camera} to Camera
+  Record{line} to Line
+}
+
+
+paginate District with pagination
+paginate Location with pagination
+paginate Camera with pagination
+paginate Record with pagination
+paginate Line with pagination
+

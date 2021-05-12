@@ -7,6 +7,11 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Varlıklar",
+                "district": "İlçeler",
+                "location": "Lokasyonlar",
+                "camera": "Kameralar",
+                "line": "Çizgiler",
+                "record": "Kayıtlar",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

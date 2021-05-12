@@ -1,0 +1,39 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "camera",
+            "otherEntityName": "camera",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "startPointX",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "startPointY",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "endPointX",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "endPointY",
+            "fieldType": "Long"
+        }
+    ],
+    "changelogDate": "20210511155635",
+    "entityTableName": "line",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}
