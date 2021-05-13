@@ -30,6 +30,10 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="duration" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
             <column name="video_line_id" type="bigint">
                 <constraints nullable="true" />
             </column>

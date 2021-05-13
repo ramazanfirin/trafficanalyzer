@@ -45,6 +45,22 @@
                 </p>
             </div>
         </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="trafficanalyzerApp.videoRecord.duration" for="field_duration">Duration</label>
+            <input type="number" class="form-control" name="duration" id="field_duration"
+                    ng-model="vm.videoRecord.duration"
+                    required/>
+            <div ng-show="editForm.duration.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.duration.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.duration.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
 
         <div class="form-group">
             <label data-translate="trafficanalyzerApp.videoRecord.videoLine" for="field_videoLine">Video Line</label>

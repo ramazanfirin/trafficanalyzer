@@ -21,6 +21,7 @@
                     <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="insertDate"><span data-translate="trafficanalyzerApp.videoRecord.insertDate">Insert Date</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="vehicleType"><span data-translate="trafficanalyzerApp.videoRecord.vehicleType">Vehicle Type</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="duration"><span data-translate="trafficanalyzerApp.videoRecord.duration">Duration</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="videoLine.id"><span data-translate="trafficanalyzerApp.videoRecord.videoLine">Video Line</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
@@ -30,6 +31,7 @@
                     <td><a ui-sref="video-record-detail({id:videoRecord.id})">{{videoRecord.id}}</a></td>
                     <td>{{videoRecord.insertDate | date:'medium'}}</td>
                     <td>{{videoRecord.vehicleType}}</td>
+                    <td>{{videoRecord.duration}}</td>
                     <td>
                         <a ui-sref="video-line-detail({id:videoRecord.videoLine.id})">{{videoRecord.videoLine.id}}</a>
                     </td>

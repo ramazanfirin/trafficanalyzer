@@ -32,6 +32,10 @@ public class VideoRecord implements Serializable {
     @Column(name = "vehicle_type", nullable = false)
     private String vehicleType;
 
+    @NotNull
+    @Column(name = "duration", nullable = false)
+    private Long duration;
+
     @ManyToOne
     private VideoLine videoLine;
 
@@ -68,6 +72,19 @@ public class VideoRecord implements Serializable {
 
     public void setVehicleType(String vehicleType) {
         this.vehicleType = vehicleType;
+    }
+
+    public Long getDuration() {
+        return duration;
+    }
+
+    public VideoRecord duration(Long duration) {
+        this.duration = duration;
+        return this;
+    }
+
+    public void setDuration(Long duration) {
+        this.duration = duration;
     }
 
     public VideoLine getVideoLine() {
@@ -110,6 +127,7 @@ public class VideoRecord implements Serializable {
             "id=" + getId() +
             ", insertDate='" + getInsertDate() + "'" +
             ", vehicleType='" + getVehicleType() + "'" +
+            ", duration=" + getDuration() +
             "}";
     }
 }

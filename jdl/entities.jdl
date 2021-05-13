@@ -43,6 +43,7 @@ entity Video{
 entity VideoRecord{
 	insertDate Instant required
 	vehicleType String required
+	duration Long required
 }
 
 relationship ManyToOne {

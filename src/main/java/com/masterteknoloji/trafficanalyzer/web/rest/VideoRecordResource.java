@@ -1,15 +1,24 @@
 package com.masterteknoloji.trafficanalyzer.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import com.masterteknoloji.trafficanalyzer.domain.VideoRecord;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.TimeZone;
 
-import com.masterteknoloji.trafficanalyzer.repository.VideoRecordRepository;
-import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
-import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
-import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
-import com.masterteknoloji.trafficanalyzer.web.rest.vm.VideoRecordQueryVM;
+import javax.validation.Valid;
 
-import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -17,16 +26,31 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import com.codahale.metrics.annotation.Timed;
+import com.masterteknoloji.trafficanalyzer.domain.Video;
+import com.masterteknoloji.trafficanalyzer.domain.VideoLine;
+import com.masterteknoloji.trafficanalyzer.domain.VideoRecord;
+import com.masterteknoloji.trafficanalyzer.repository.VideoLineRepository;
+import com.masterteknoloji.trafficanalyzer.repository.VideoRecordRepository;
+import com.masterteknoloji.trafficanalyzer.repository.VideoRepository;
+import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
+import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
+import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.VideoRecordQueryVM;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.VideoRecordSummaryVM;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
+
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing VideoRecord.
@@ -40,9 +64,19 @@ public class VideoRecordResource {
     private static final String ENTITY_NAME = "videoRecord";
 
     private final VideoRecordRepository videoRecordRepository;
+    
+    private final VideoLineRepository videoLineRepository;
 
-    public VideoRecordResource(VideoRecordRepository videoRecordRepository) {
+    private final VideoRepository videoRepository;
+    
+    DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+	
+    
+    public VideoRecordResource(VideoRecordRepository videoRecordRepository, VideoLineRepository videoLineRepository , VideoRepository videoRepository) {
         this.videoRecordRepository = videoRecordRepository;
+        this.videoLineRepository = videoLineRepository;
+        this.videoRepository = videoRepository;
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
     /**
@@ -139,11 +173,83 @@ public class VideoRecordResource {
         
         Iterable<Map<String,Object>> videoRecords = videoRecordRepository.findAllByVideoId(id);
         for (Map<String, Object> map : videoRecords) {
-        	result.add(new VideoRecordQueryVM((Long)map.get("id"), (String)map.get("vehicleType"),(Instant)map.get("insertDate"), (Long)map.get("lineId")));
-		}
+        	result.add(new VideoRecordQueryVM((Long)map.get("id"), (String)map.get("vehicleType"),(Instant)map.get("insertDate"), (Long)map.get("lineId"),(Long)map.get("duration")));
+        }
+      
+        for (VideoRecordQueryVM recordQueryVM : result) {
+			Date myDate = Date.from(recordQueryVM.getInsertDate());
+			System.out.println(sdf.format(myDate));
+			
+        }
         
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
     }
     
+    @GetMapping("/video-records/getAllDataSummary/{id}")
+    @Timed
+    public ResponseEntity<List<VideoRecordSummaryVM>> getAllDataSummary(@PathVariable Long id) {
+        log.debug("REST request to get VideoRecord : {}", id);
+        List<VideoRecordSummaryVM> result = new ArrayList<VideoRecordSummaryVM>();
+        
+        Iterable<Map<String,Object>> videoRecords = videoRecordRepository.getSummaryReport(id);
+        for (Map<String, Object> map : videoRecords) {
+        	result.add(new VideoRecordSummaryVM(map.get("grouptime"), (String)map.get("type"),(BigInteger)map.get("counts")));
+		}
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
+    }
+    
+    @GetMapping("/video-records/parseData")
+    @Timed
+    public ResponseEntity<Void> parseData() throws FileNotFoundException, IOException, CsvException, ParseException {
+		
+    	Video video = videoRepository.findOne(1l);
+    	VideoLine videoLine = videoLineRepository.findOne(1l);
+    	
+    	int i =0;
+    	try (CSVReader reader = new CSVReader(new FileReader("C:\\Users\\ramazan\\Downloads\\excel_count.csv"))) {
+    	      List<String[]> r = reader.readAll();
+    	      for (String[] strings : r) {
+				VideoRecord videoRecord = new VideoRecord();
+				videoRecord.setVehicleType(strings[1]);
+				videoRecord.setVideoLine(videoLine);
+				videoRecord.setInsertDate(prepareDateValue(strings[0]));
+				videoRecord.setDuration(prepareDuration(strings[0]));
+				videoRecordRepository.save(videoRecord);
+				i++;
+				System.out.println(i+" bitti");
+				//break;
+			 }
+    	  }
+    	
+    	return null;
+        
+    }
+    
+    private Long prepareDuration(String dateValue) throws ParseException {
+    	
+    	if(dateValue.length()==14)
+    	 	dateValue = dateValue.substring(0,11);
+    	 else if(dateValue.length()==7) {
+    		dateValue = dateValue+".000";
+    	 }
+    	
+    	Date date = sdf.parse("1970-01-01 0"+dateValue);
+    	return date.getTime();
+    	
+    }
+    
+    private Instant prepareDateValue(String dateValue) throws ParseException {
+    	
+    	if(dateValue.length()==14)
+    	 	dateValue = dateValue.substring(0,11);
+    	 else if(dateValue.length()==7) {
+    		dateValue = dateValue+".000";
+    	 }
+    	
+    	
+    	Date date = sdf.parse("2000-01-01 0"+dateValue);
+    	return date.toInstant();
+    	
+    }
     
 }

@@ -28,9 +28,15 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import static com.masterteknoloji.trafficanalyzer.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -81,7 +87,7 @@ public class VideoRecordResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final VideoRecordResource videoRecordResource = new VideoRecordResource(videoRecordRepository);
+        final VideoRecordResource videoRecordResource = new VideoRecordResource(videoRecordRepository,videoLineRepository,videoRepository);
         this.restVideoRecordMockMvc = MockMvcBuilders.standaloneSetup(videoRecordResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -312,6 +318,35 @@ public class VideoRecordResourceIntTest {
 
         assertThat(asList).hasSize(1);
 
+    }
+    
+    @Test
+    public void parseDate() throws ParseException {
+    	 DateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    	 sdf2.setTimeZone(TimeZone.getTimeZone("UTC"));
+    	 
+    	 String dateValue = "0:00:03.520000";
+    	 String dateValue2 = "0:00:08";
+    	 
+    	 
+    	 Date date = sdf2.parse("1970-01-01 0"+prepareDateValue(dateValue));
+    	 System.out.println(sdf2.format(date));
+    	 System.out.println(date.getTime());
+    
+    	 Date date2 = sdf2.parse("1970-01-01 0"+prepareDateValue(dateValue2));
+    	 System.out.println(sdf2.format(date2));
+    	 System.out.println(date2.getTime());
+    
+    }
+    
+    public String prepareDateValue(String dateValue) {
+    	if(dateValue.length()==15)
+    	 	dateValue = dateValue.substring(0,11);
+    	 else if(dateValue.length()==7) {
+    		dateValue = dateValue+".000";
+    	 }
+    	
+    	return dateValue;
     }
     
     @Test

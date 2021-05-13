@@ -51,6 +51,48 @@
                 }]
             }
         })
+        .state('video-record-summary', {
+            parent: 'entity',
+            url: '/video-record-summary?page&sort&search',
+            data: {
+                authorities: ['ROLE_USER'],
+                pageTitle: 'trafficanalyzerApp.videoRecord.home.title'
+            },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/video-record/video-records-summary.html',
+                    controller: 'VideoRecordController',
+                    controllerAs: 'vm'
+                }
+            },
+            params: {
+                page: {
+                    value: '1',
+                    squash: true
+                },
+                sort: {
+                    value: 'id,asc',
+                    squash: true
+                },
+                search: null
+            },
+            resolve: {
+                pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                    return {
+                        page: PaginationUtil.parsePage($stateParams.page),
+                        sort: $stateParams.sort,
+                        predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                        ascending: PaginationUtil.parseAscending($stateParams.sort),
+                        search: $stateParams.search
+                    };
+                }],
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('videoRecord');
+                    $translatePartialLoader.addPart('global');
+                    return $translate.refresh();
+                }]
+            }
+        })
         .state('video-record-detail', {
             parent: 'video-record',
             url: '/video-record/{id}',

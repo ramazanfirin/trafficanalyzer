@@ -18,6 +18,7 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
 
         loadAll();
+        loadAllSummary();
 
         function loadAll () {
             VideoRecord.query({
@@ -43,6 +44,20 @@
                 AlertService.error(error.data.message);
             }
         }
+        
+        
+        function loadAllSummary () {
+            VideoRecord.getSummary({}, onSuccess, onError);
+            
+            function onSuccess(data, headers) {
+                vm.videoRecordsSummary = data;
+            }
+            function onError(error) {
+                AlertService.error(error.data.message);
+            }
+        }
+        
+        
 
         function loadPage(page) {
             vm.page = page;

@@ -16,6 +16,7 @@
                 "videoLine": "Video Line",
                 "video": "Video",
                 "videoRecord": "Video Record",
+                "videoRecordSummary": "Video Record Özet",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
