@@ -2,7 +2,7 @@
     "trafficanalyzerApp": {
         "videoRecord" : {
             "home": {
-                "title": "Video Records",
+                "title": "Video Rapor",
                 "createLabel": "Create a new Video Record",
                 "createOrEditLabel": "Create or edit a Video Record"
             },

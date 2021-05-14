@@ -13,10 +13,10 @@
                 "line": "Çizgiler",
                 "record": "Kayıtlar",
                 "record": "Record",
-                "videoLine": "Video Line",
-                "video": "Video",
-                "videoRecord": "Video Record",
-                "videoRecordSummary": "Video Record Özet",
+                "videoLine": "Video Çizgi",
+                "video": "Videolar",
+                "videoRecord": "Video Rapor",
+                "videoRecordSummary": "Video Rapor Özet",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
