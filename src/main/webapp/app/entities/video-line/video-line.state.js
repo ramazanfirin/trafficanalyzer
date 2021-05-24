@@ -165,6 +165,38 @@
                 });
             }]
         })
+        .state('video-line-create', {
+            parent: 'video-line',
+            url: '/create',
+            data: {
+                authorities: ['ROLE_USER']
+            },
+            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/entities/video-line/video-line-create.html',
+                    controller: 'VideoLineCreateController',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        entity: function () {
+                            return {
+                                name: null,
+                                startPointX: null,
+                                startPointY: null,
+                                endPointX: null,
+                                endPointY: null,
+                                id: null
+                            };
+                        }
+                    }
+                }).result.then(function() {
+                    $state.go('video-line', null, { reload: 'video-line' });
+                }, function() {
+                    $state.go('video-line');
+                });
+            }]
+        })
         .state('video-line.delete', {
             parent: 'video-line',
             url: '/{id}/delete',
