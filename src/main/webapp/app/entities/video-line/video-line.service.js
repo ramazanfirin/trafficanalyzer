@@ -11,6 +11,7 @@
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
+            'getFileList': { method: 'GET', isArray: true,url:'/api/videos/getFileList'},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

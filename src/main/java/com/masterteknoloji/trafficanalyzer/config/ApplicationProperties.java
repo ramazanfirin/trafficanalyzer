@@ -11,4 +11,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
 
+	public String videoFilesPath;
+
+	public String getVideoFilesPath() {
+		return videoFilesPath;
+	}
+
+	public void setVideoFilesPath(String videoFilesPath) {
+		this.videoFilesPath = videoFilesPath;
+	}
+	
+	
 }

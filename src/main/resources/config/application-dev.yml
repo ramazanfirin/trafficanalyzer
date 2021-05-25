@@ -146,3 +146,4 @@ jhipster:
 # ===================================================================
 
 application:
+    videoFilesPath: D:\KBB\location2

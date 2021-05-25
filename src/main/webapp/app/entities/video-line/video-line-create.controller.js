@@ -19,14 +19,36 @@
 		vm.polygon = [];
 	    vm.points = $window.points;
 	    vm.changeMessage = changeMessage;
+	    vm.update = update;
 	    vm.deleteAll = deleteAll;
+	    vm.videoFileList = [];
 	    
 	    vm.addMessageBefore = "Çizgi eklemek için, Ekle butonuna basınız"
 	    vm.addMessageAfter = "Çizgi ekleyebilirsiniz"
 	    
 	    vm.addMessage = vm.addMessageBefore;
 	    
-	    loadAll ();
+	    vm.selectVideoMessage = ""
+	    
+	    //loadAll ();
+	    
+	    function update(){
+	    	vm.selectVideoMessage = "Lütfen Video görüntüsünün gelmesini bekleyiniz";
+	    	
+	    	console.log("update bailadı");
+			$window.imageObj1.src = 'http://localhost:8080/api/videos/image/'+vm.videoLine.video.name;
+			$window.layer.draw();
+			console.log("update bitti");
+	    	//setTimeout(resetMessage, 1);
+	    	resetMessage();
+	    }
+	    
+	    
+	    
+	    function resetMessage(){
+	    	vm.selectVideoMessage = ""
+	    }
+	    
 	    
 	    function loadAll () {
 	    	vm.polygon = new Object();

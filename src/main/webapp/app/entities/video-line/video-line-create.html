@@ -25,10 +25,14 @@ Create
         </div>
         <div class="form-group">
             <label data-translate="trafficanalyzerApp.videoLine.video" for="field_video">Video</label>
-            <select class="form-control" id="field_video" name="video" ng-model="vm.videoLine.video" ng-options="video as video.id for video in vm.videos track by video.id">
+            <select class="form-control" id="field_video" name="video" ng-change="vm.update()" ng-model="vm.videoLine.video" ng-options="video as video.name for video in vm.videos track by video.id">
                 <option value=""></option>
             </select>
+        	   
+			   
         </div>
+        <span>{{vm.selectVideoMessage}}</span>
+         
         
         <div class="form-group">
 <!--         	<img ng-src="content/images/kale.JPG" width="640" height="480"> -->
@@ -149,7 +153,13 @@ Create
     layerImage.draw();
  };
  
- imageObj1.src = 'http://localhost:8080/content/images/kale.JPG';
+ //imageObj1.src = 'http://localhost:8080/content/images/kale.JPG';
+//  imageObj1.src = 'http://localhost:8080/api/videos/image/Location2-EVENING-Part3-KARTAL_KAVSAK_PASAJLAR_20210415174939_20210415180000_212255.mp4';
+ 
+ var scope = angular.element(document.getElementById("editForm")).scope();
+ if(scope.vm.videoLine.video!=null)
+ 	imageObj1.src = 'http://localhost:8080/api/videos/image/'+scope.vm.videoLine.video.name;
+ 
  layerImage.add(darthVaderImg);	
 
  stage.add(layerImage);
@@ -244,6 +254,14 @@ loadImage();
 				poly = null;
 		   }
 	 }
+	
+	function update(){
+		console.log("update bailadı");
+		var scope = angular.element(document.getElementById("editForm")).scope();
+		imageObj1.src = 'http://localhost:8080/api/videos/image/'+scope.vm.videoLine.video.name;
+		layer.draw();
+		console.log("update bitti");
+	}
 
 </script>
 

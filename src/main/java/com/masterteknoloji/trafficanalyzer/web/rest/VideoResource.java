@@ -1,13 +1,24 @@
 package com.masterteknoloji.trafficanalyzer.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import com.masterteknoloji.trafficanalyzer.domain.Video;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
-import com.masterteknoloji.trafficanalyzer.repository.VideoRepository;
-import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
-import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
-import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import javax.imageio.ImageIO;
+import javax.validation.Valid;
+
+import org.bytedeco.javacv.FFmpegFrameGrabber;
+import org.bytedeco.javacv.Frame;
+import org.bytedeco.javacv.Java2DFrameConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -15,14 +26,26 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.codahale.metrics.annotation.Timed;
+import com.masterteknoloji.trafficanalyzer.config.ApplicationProperties;
+import com.masterteknoloji.trafficanalyzer.domain.Video;
+import com.masterteknoloji.trafficanalyzer.repository.VideoRepository;
+import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
+import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
+import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
 
-import java.util.List;
-import java.util.Optional;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing Video.
@@ -36,9 +59,12 @@ public class VideoResource {
     private static final String ENTITY_NAME = "video";
 
     private final VideoRepository videoRepository;
+    
+    private final ApplicationProperties applicationProperties;
 
-    public VideoResource(VideoRepository videoRepository) {
+    public VideoResource(VideoRepository videoRepository,ApplicationProperties applicationProperties) {
         this.videoRepository = videoRepository;
+        this.applicationProperties = applicationProperties;
     }
 
     /**
@@ -124,5 +150,71 @@ public class VideoResource {
         log.debug("REST request to delete Video : {}", id);
         videoRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+    
+    @GetMapping(value = "/videos/image/{name}")
+    public @ResponseBody byte[] getImage(@PathVariable String name) throws IOException {
+        
+    	String filePath = applicationProperties.getVideoFilesPath()+"\\"+name+".mp4";
+    	
+    	File file = new File(filePath);
+    	file.exists();
+    	
+    	
+    	FFmpegFrameGrabber g = new FFmpegFrameGrabber(filePath);
+		g.start();
+
+		Java2DFrameConverter bimConverter = new Java2DFrameConverter();
+		
+		BufferedImage image=null;
+		for (int i = 0 ; i < 5 ; i++) {
+		    
+		Frame f =	g.grabFrame();
+			image = bimConverter.convert(f);
+			
+		}
+
+		
+		
+		g.stop();
+		
+		bimConverter.close();
+		
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		  ImageIO.write(image, "jpg", baos);
+        
+        
+       return baos.toByteArray();
+      
+    }
+    
+    @Scheduled(fixedRate = 60000)
+    public void synchFileList() throws IOException {
+    
+    	log.info("synchFileList başladi" );
+    	List<Video> videoList = videoRepository.findAll();
+    	List<String> list = Arrays.asList(new File(applicationProperties.getVideoFilesPath()).list());
+    	
+    	for (String string : list) {
+			if(getVideoByName(videoList, string)==null){
+				Video videoNew = new Video();
+				videoNew.setName(string);
+				videoNew.setPath(string);
+				videoRepository.save(videoNew);
+				log.info("synchFileList -"+videoNew+" oluturuldu" );
+		        
+			}
+		}
+    	
+    	
+    	log.info("synchFileList bitti" );
+   }
+    
+    public Video getVideoByName(List<Video> videoList,String name) {
+    	for (Video video : videoList) {
+			if(video.getName().equals(name))
+				return video;
+		}
+    	return null;
     }
 }
