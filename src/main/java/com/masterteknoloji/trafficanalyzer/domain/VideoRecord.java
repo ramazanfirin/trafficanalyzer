@@ -3,6 +3,8 @@ package com.masterteknoloji.trafficanalyzer.domain;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -24,6 +26,7 @@ public class VideoRecord implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @NotNull
     @Column(name = "insert_date", nullable = false)
     private Instant insertDate;

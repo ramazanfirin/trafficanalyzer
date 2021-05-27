@@ -2,9 +2,12 @@ package com.masterteknoloji.trafficanalyzer.web.rest.vm;
 
 import java.time.Instant;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class VideoRecordQueryVM {
 
 	Long id;
+	@JsonIgnore
 	Instant insertDate;
 	Long lineId;
 	String vehicleType;
