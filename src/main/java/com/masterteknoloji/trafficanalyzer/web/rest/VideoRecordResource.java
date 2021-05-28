@@ -19,6 +19,7 @@ import java.util.TimeZone;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -64,7 +65,7 @@ public class VideoRecordResource {
     private static final String ENTITY_NAME = "videoRecord";
 
     private final VideoRecordRepository videoRecordRepository;
-    
+
     private final VideoLineRepository videoLineRepository;
 
     private final VideoRepository videoRepository;
@@ -173,7 +174,7 @@ public class VideoRecordResource {
         
         Iterable<Map<String,Object>> videoRecords = videoRecordRepository.findAllByVideoId(id);
         for (Map<String, Object> map : videoRecords) {
-        	result.add(new VideoRecordQueryVM((Long)map.get("id"), (String)map.get("vehicleType"),(Instant)map.get("insertDate"), (Long)map.get("lineId"),(Long)map.get("duration")));
+        	result.add(new VideoRecordQueryVM((Long)map.get("id"), (String)map.get("vehicleType"),(Instant)map.get("insertDate"), (Long)map.get("lineId"),(Long)map.get("duration"),(Double)map.get("speed")));
         }
       
         for (VideoRecordQueryVM recordQueryVM : result) {
@@ -206,14 +207,19 @@ public class VideoRecordResource {
     	VideoLine videoLine = videoLineRepository.findOne(1l);
     	
     	int i =0;
-    	try (CSVReader reader = new CSVReader(new FileReader("C:\\Users\\ramazan\\Downloads\\excel_count.csv"))) {
+    	try (CSVReader reader = new CSVReader(new FileReader("C:\\Users\\ramazan\\Downloads\\speed.csv"))) {
     	      List<String[]> r = reader.readAll();
     	      for (String[] strings : r) {
-				VideoRecord videoRecord = new VideoRecord();
+				
+    	    	if(strings[1].equals("person"))
+    	    		continue;
+    	    	  
+    	    	VideoRecord videoRecord = new VideoRecord();
 				videoRecord.setVehicleType(strings[1]);
 				videoRecord.setVideoLine(videoLine);
 				videoRecord.setInsertDate(prepareDateValue(strings[0]));
 				videoRecord.setDuration(prepareDuration(strings[0]));
+				videoRecord.setSpeed(prepareSpeed(strings[2]));
 				videoRecordRepository.save(videoRecord);
 				i++;
 				System.out.println(i+" bitti");
@@ -238,11 +244,29 @@ public class VideoRecordResource {
     	
     }
     
+    private Double prepareSpeed(String value)  {
+    	
+    	if(StringUtils.isEmpty(value) || value.equals("Unknown"))
+    		return 0d;
+    	
+    	Double result = 0d;
+		try {
+			result = Double.parseDouble(value);
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	return result;
+    	
+    }
+    
     private Instant prepareDateValue(String dateValue) throws ParseException {
     	
     	if(dateValue.length()==14)
-    	 	dateValue = dateValue.substring(0,11);
-    	 else if(dateValue.length()==7) {
+    	 	dateValue = dateValue.substring(0,12);
+    	 else //if(dateValue.length()==7) 
+    	 {
     		dateValue = dateValue+".000";
     	 }
     	
@@ -250,6 +274,7 @@ public class VideoRecordResource {
     	Date date = sdf.parse("2000-01-01 0"+dateValue);
     	return date.toInstant();
     	
+//    	return Instant.now();    	
     }
     
 }

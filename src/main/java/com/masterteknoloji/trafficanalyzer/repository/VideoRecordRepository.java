@@ -17,9 +17,15 @@ import com.masterteknoloji.trafficanalyzer.domain.VideoRecord;
 @SuppressWarnings("unused")
 @Repository
 public interface VideoRecordRepository extends JpaRepository<VideoRecord, Long> {
-    @Query("select v.id as id,v.vehicleType as vehicleType,v.insertDate as insertDate,v.videoLine.id as lineId,v.duration as duration from VideoRecord v where v.videoLine.video.id = ?1 order by v.insertDate")
+    @Query("select v.id as id,"
+    		+ "    v.vehicleType as vehicleType,"
+    		+ "    v.insertDate as insertDate,"
+    		+ "    v.videoLine.id as lineId,"
+    		+ "    v.duration as duration, "
+    		+ "    v.speed as speed "
+    		+ "    from VideoRecord v where v.videoLine.video.id = ?1 order by v.insertDate")
     Iterable<Map<String,Object>> findAllByVideoId(Long id);
-    
+
     @Query(value="Select vehicle_type as type, from_unixtime(FLOOR(UNIX_TIMESTAMP(insert_date)/(5*60))*(5*60)) GroupTime,\n"
     		+ "COUNT(*) as counts\n"
     		+ "FROM video_record i\n"

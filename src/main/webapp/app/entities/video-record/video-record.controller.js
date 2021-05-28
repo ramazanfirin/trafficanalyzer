@@ -44,7 +44,7 @@
                 AlertService.error(error.data.message);
             }
         }
-        
+
         
         function loadAllSummary () {
             VideoRecord.getSummary({}, onSuccess, onError);

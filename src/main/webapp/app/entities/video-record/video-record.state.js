@@ -168,6 +168,8 @@
                             return {
                                 insertDate: null,
                                 vehicleType: null,
+                                duration: null,
+                                speed: null,
                                 id: null
                             };
                         }

@@ -3,8 +3,6 @@ package com.masterteknoloji.trafficanalyzer.domain;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -26,7 +24,6 @@ public class VideoRecord implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonIgnore
     @NotNull
     @Column(name = "insert_date", nullable = false)
     private Instant insertDate;
@@ -38,6 +35,9 @@ public class VideoRecord implements Serializable {
     @NotNull
     @Column(name = "duration", nullable = false)
     private Long duration;
+
+    @Column(name = "speed")
+    private Double speed;
 
     @ManyToOne
     private VideoLine videoLine;
@@ -90,6 +90,19 @@ public class VideoRecord implements Serializable {
         this.duration = duration;
     }
 
+    public Double getSpeed() {
+        return speed;
+    }
+
+    public VideoRecord speed(Double speed) {
+        this.speed = speed;
+        return this;
+    }
+
+    public void setSpeed(Double speed) {
+        this.speed = speed;
+    }
+
     public VideoLine getVideoLine() {
         return videoLine;
     }
@@ -131,6 +144,7 @@ public class VideoRecord implements Serializable {
             ", insertDate='" + getInsertDate() + "'" +
             ", vehicleType='" + getVehicleType() + "'" +
             ", duration=" + getDuration() +
+            ", speed=" + getSpeed() +
             "}";
     }
 }

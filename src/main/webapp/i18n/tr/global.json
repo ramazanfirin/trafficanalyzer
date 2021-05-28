@@ -17,6 +17,7 @@
                 "video": "Videolar",
                 "videoRecord": "Video Rapor",
                 "videoRecordSummary": "Video Rapor Özet",
+                "videoRecord": "Video Record",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

@@ -18,6 +18,7 @@
             "insertDate": "Insert Date",
             "vehicleType": "Vehicle Type",
             "duration": "Duration",
+            "speed": "Speed",
             "videoLine": "Video Line"
         }
     }

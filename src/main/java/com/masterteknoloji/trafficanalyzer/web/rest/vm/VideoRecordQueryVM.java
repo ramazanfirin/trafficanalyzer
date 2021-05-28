@@ -12,6 +12,7 @@ public class VideoRecordQueryVM {
 	Long lineId;
 	String vehicleType;
 	Long duration;
+	Double speed=0d;
 	
 	
 	
@@ -19,13 +20,14 @@ public class VideoRecordQueryVM {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public VideoRecordQueryVM(Long id,String vehicleType,Instant insertDate,Long lineId,Long duration) {
+	public VideoRecordQueryVM(Long id,String vehicleType,Instant insertDate,Long lineId,Long duration,Double speed) {
 		super();
 		this.id = id;
 		this.insertDate = insertDate;
 		this.lineId = lineId;
 		this.vehicleType = vehicleType;
 		this.duration = duration;
+		this.speed = speed;
 	}
 	public Long getId() {
 		return id;
@@ -56,6 +58,12 @@ public class VideoRecordQueryVM {
 	}
 	public void setDuration(Long duration) {
 		this.duration = duration;
+	}
+	public Double getSpeed() {
+		return speed;
+	}
+	public void setSpeed(Double speed) {
+		this.speed = speed;
 	}
 	
 	

@@ -34,6 +34,10 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="speed" type="double">
+                <constraints nullable="true" />
+            </column>
+
             <column name="video_line_id" type="bigint">
                 <constraints nullable="true" />
             </column>

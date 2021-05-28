@@ -29,6 +29,10 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "speed",
+            "fieldType": "Double"
         }
     ],
     "changelogDate": "20210512064852",
