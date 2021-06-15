@@ -203,23 +203,23 @@ public class VideoRecordResource {
     @Timed
     public ResponseEntity<Void> parseData() throws FileNotFoundException, IOException, CsvException, ParseException {
 		
-    	Video video = videoRepository.findOne(1l);
-    	VideoLine videoLine = videoLineRepository.findOne(1l);
+//    	Video video = videoRepository.findOne(2l);
+    	VideoLine videoLine = videoLineRepository.findOne(2l);
     	
     	int i =0;
-    	try (CSVReader reader = new CSVReader(new FileReader("C:\\Users\\ramazan\\Downloads\\speed.csv"))) {
+    	try (CSVReader reader = new CSVReader(new FileReader("C:\\Users\\ramazan\\Downloads\\nigth_2.csv"))) {
     	      List<String[]> r = reader.readAll();
     	      for (String[] strings : r) {
 				
-    	    	if(strings[1].equals("person"))
+    	    	if(strings[2].equals("person"))
     	    		continue;
     	    	  
     	    	VideoRecord videoRecord = new VideoRecord();
-				videoRecord.setVehicleType(strings[1]);
+				videoRecord.setVehicleType(strings[2]);
 				videoRecord.setVideoLine(videoLine);
-				videoRecord.setInsertDate(prepareDateValue(strings[0]));
-				videoRecord.setDuration(prepareDuration(strings[0]));
-				videoRecord.setSpeed(prepareSpeed(strings[2]));
+				videoRecord.setInsertDate(prepareDateValue(strings[1]));
+				videoRecord.setDuration(prepareDuration(strings[1]));
+//				videoRecord.setSpeed(prepareSpeed(strings[2]));
 				videoRecordRepository.save(videoRecord);
 				i++;
 				System.out.println(i+" bitti");

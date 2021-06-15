@@ -188,7 +188,7 @@ public class VideoResource {
       
     }
     
-    @Scheduled(fixedRate = 60000)
+    //@Scheduled(fixedRate = 60000)
     public void synchFileList() throws IOException {
     
     	log.info("synchFileList başladi" );
