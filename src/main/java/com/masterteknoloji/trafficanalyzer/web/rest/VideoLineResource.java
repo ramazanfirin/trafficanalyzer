@@ -7,6 +7,8 @@ import com.masterteknoloji.trafficanalyzer.repository.VideoLineRepository;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.VideoRecordQueryVM;
+
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +21,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -123,5 +128,26 @@ public class VideoLineResource {
         log.debug("REST request to delete VideoLine : {}", id);
         videoLineRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+    
+    
+    @GetMapping("/video-lines/getAllData/{id}")
+    @Timed
+    public ResponseEntity<List<VideoRecordQueryVM>> getAllDatagetAllData(@PathVariable Long id) {
+        log.debug("REST request to get VideoRecord : {}", id);
+        List<VideoRecordQueryVM> result = new ArrayList<VideoRecordQueryVM>();
+        
+        Iterable<Map<String,Object>> videoRecords = videoLineRepository.findAllByLineId(id);
+        for (Map<String, Object> map : videoRecords) {
+        	result.add(new VideoRecordQueryVM((Long)map.get("id"), (String)map.get("vehicleType"),(Instant)map.get("insertDate"), (Long)map.get("lineId"),(Long)map.get("duration"),(Double)map.get("speed")));
+        }
+      
+        for (VideoRecordQueryVM recordQueryVM : result) {
+			Date myDate = Date.from(recordQueryVM.getInsertDate());
+			//System.out.println(sdf.format(myDate));
+			
+        }
+        
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
     }
 }

@@ -204,10 +204,13 @@ public class VideoRecordResource {
     public ResponseEntity<Void> parseData() throws FileNotFoundException, IOException, CsvException, ParseException {
 		
 //    	Video video = videoRepository.findOne(2l);
-    	VideoLine videoLine = videoLineRepository.findOne(2l);
+    	VideoLine gultepeKartal = videoLineRepository.findOne(3l);
+    	VideoLine kartalGultepe = videoLineRepository.findOne(4l);
+    	
+    	List<VideoRecord> tempList = new ArrayList<VideoRecord>();
     	
     	int i =0;
-    	try (CSVReader reader = new CSVReader(new FileReader("C:\\Users\\ramazan\\Downloads\\nigth_2.csv"))) {
+    	try (CSVReader reader = new CSVReader(new FileReader("D:\\KBB\\inpt_1_2_lines_updated.csv"))) {
     	      List<String[]> r = reader.readAll();
     	      for (String[] strings : r) {
 				
@@ -215,16 +218,30 @@ public class VideoRecordResource {
     	    		continue;
     	    	  
     	    	VideoRecord videoRecord = new VideoRecord();
-				videoRecord.setVehicleType(strings[2]);
+    	    	videoRecord.setInsertDate(prepareDateValue(strings[0]));
+				videoRecord.setDuration(prepareDuration(strings[0]));
+				videoRecord.setVehicleType(strings[1]);
+				
+				VideoLine videoLine;
+				String lineId=strings[2];
+				if(lineId.equals("0"))
+					videoLine = gultepeKartal;
+				else if(lineId.equals("1"))
+					videoLine =kartalGultepe;
+				else	
+					throw new RuntimeException("line bulunamadı");
+					
 				videoRecord.setVideoLine(videoLine);
-				videoRecord.setInsertDate(prepareDateValue(strings[1]));
-				videoRecord.setDuration(prepareDuration(strings[1]));
-//				videoRecord.setSpeed(prepareSpeed(strings[2]));
+				videoRecord.setSpeed(prepareSpeed(strings[3]));
 				videoRecordRepository.save(videoRecord);
 				i++;
 				System.out.println(i+" bitti");
+				tempList.add(videoRecord);
+				
+				
 				//break;
 			 }
+    	      System.out.println("bitti");
     	  }
     	
     	return null;
