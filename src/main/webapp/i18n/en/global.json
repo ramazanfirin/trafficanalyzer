@@ -15,6 +15,8 @@
                 "videoLine": "Video Line",
                 "video": "Video",
                 "videoRecord": "Video Record",
+                "videoDirection": "Video Direction",
+                "videoDirectionRecord": "Video Direction Record",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

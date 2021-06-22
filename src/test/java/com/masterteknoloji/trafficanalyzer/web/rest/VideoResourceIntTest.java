@@ -1,7 +1,7 @@
 package com.masterteknoloji.trafficanalyzer.web.rest;
 
 import com.masterteknoloji.trafficanalyzer.TrafficanalyzerApp;
-
+import com.masterteknoloji.trafficanalyzer.config.ApplicationProperties;
 import com.masterteknoloji.trafficanalyzer.domain.Video;
 import com.masterteknoloji.trafficanalyzer.repository.VideoRepository;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.ExceptionTranslator;
@@ -63,6 +63,9 @@ public class VideoResourceIntTest {
 
     @Autowired
     private EntityManager em;
+    
+    @Autowired
+    private ApplicationProperties applicationProperties;
 
     private MockMvc restVideoMockMvc;
 
@@ -71,7 +74,7 @@ public class VideoResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final VideoResource videoResource = new VideoResource(videoRepository);
+        final VideoResource videoResource = new VideoResource(videoRepository,applicationProperties);
         this.restVideoMockMvc = MockMvcBuilders.standaloneSetup(videoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

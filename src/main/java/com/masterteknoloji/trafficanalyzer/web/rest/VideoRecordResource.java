@@ -37,9 +37,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
-import com.masterteknoloji.trafficanalyzer.domain.Video;
+import com.masterteknoloji.trafficanalyzer.domain.VideoDirection;
+import com.masterteknoloji.trafficanalyzer.domain.VideoDirectionRecord;
 import com.masterteknoloji.trafficanalyzer.domain.VideoLine;
 import com.masterteknoloji.trafficanalyzer.domain.VideoRecord;
+import com.masterteknoloji.trafficanalyzer.repository.VideoDirectionRecordRepository;
+import com.masterteknoloji.trafficanalyzer.repository.VideoDirectionRepository;
 import com.masterteknoloji.trafficanalyzer.repository.VideoLineRepository;
 import com.masterteknoloji.trafficanalyzer.repository.VideoRecordRepository;
 import com.masterteknoloji.trafficanalyzer.repository.VideoRepository;
@@ -65,7 +68,11 @@ public class VideoRecordResource {
     private static final String ENTITY_NAME = "videoRecord";
 
     private final VideoRecordRepository videoRecordRepository;
+    
+    private final VideoDirectionRecordRepository videoDirectionRecordRepository;
 
+    private final VideoDirectionRepository videoDirectionRepository;
+    
     private final VideoLineRepository videoLineRepository;
 
     private final VideoRepository videoRepository;
@@ -73,10 +80,12 @@ public class VideoRecordResource {
     DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 	
     
-    public VideoRecordResource(VideoRecordRepository videoRecordRepository, VideoLineRepository videoLineRepository , VideoRepository videoRepository) {
+    public VideoRecordResource(VideoRecordRepository videoRecordRepository, VideoLineRepository videoLineRepository , VideoRepository videoRepository, VideoDirectionRecordRepository videoDirectionRecordRepository,VideoDirectionRepository videoDirectionRepository) {
         this.videoRecordRepository = videoRecordRepository;
         this.videoLineRepository = videoLineRepository;
         this.videoRepository = videoRepository;
+        this.videoDirectionRecordRepository = videoDirectionRecordRepository;
+        this.videoDirectionRepository = videoDirectionRepository;
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
@@ -247,6 +256,52 @@ public class VideoRecordResource {
     	return null;
         
     }
+    
+    @GetMapping("/video-records/parseDataForIntersections")
+    @Timed
+    public ResponseEntity<Void> parseDataForIntersections() throws FileNotFoundException, IOException, CsvException, ParseException {
+		
+//    	Video video = videoRepository.findOne(2l);
+//    	VideoLine gultepeKartal = videoLineRepository.findOne(3l);
+//    	VideoLine kartalGultepe = videoLineRepository.findOne(4l);
+    	
+    	List<VideoDirectionRecord> tempList = new ArrayList<VideoDirectionRecord>();
+    	
+    	int i =0;
+    	try (CSVReader reader = new CSVReader(new FileReader("D:\\KBB\\inpt_1_2_lines_updated.csv"))) {
+    	      List<String[]> r = reader.readAll();
+    	      for (String[] strings : r) {
+				
+    	    	if(strings[2].equals("person"))
+    	    		continue;
+    	    	  
+    	    	VideoDirectionRecord videoRecord = new VideoDirectionRecord();
+    	    	videoRecord.setInsertDate(prepareDateValue(strings[0]));
+				videoRecord.setDuration(prepareDuration(strings[0]));
+				videoRecord.setVehicleType(strings[1]);
+				
+				VideoDirection videoDirection = videoDirectionRepository.findOne(new Long(strings[2]));
+				if(videoDirection==null)
+					throw new RuntimeException("directionId bulunamadı");
+					
+				videoRecord.setVideoDirection(videoDirection);
+				videoRecord.setSpeed(prepareSpeed(strings[3]));
+				videoDirectionRecordRepository.save(videoRecord);
+				i++;
+				System.out.println(i+" bitti");
+				tempList.add(videoRecord);
+				
+				
+				//break;
+			 }
+    	      System.out.println("bitti");
+    	  }
+    	
+    	return null;
+        
+    }
+    
+    
     
     private Long prepareDuration(String dateValue) throws ParseException {
     	

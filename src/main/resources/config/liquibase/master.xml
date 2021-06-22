@@ -13,6 +13,8 @@
     <include file="config/liquibase/changelog/20210512064850_added_entity_VideoLine.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210512064851_added_entity_Video.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210512064852_added_entity_VideoRecord.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210622051703_added_entity_VideoDirection.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210622051704_added_entity_VideoDirectionRecord.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20210511155633_added_entity_constraints_Location.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210511155634_added_entity_constraints_Camera.xml" relativeToChangelogFile="false"/>
@@ -20,5 +22,7 @@
     <include file="config/liquibase/changelog/20210511155636_added_entity_constraints_Record.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210512064850_added_entity_constraints_VideoLine.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210512064852_added_entity_constraints_VideoRecord.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210622051703_added_entity_constraints_VideoDirection.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210622051704_added_entity_constraints_VideoDirectionRecord.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

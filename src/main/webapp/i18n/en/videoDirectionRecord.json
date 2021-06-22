@@ -1,0 +1,25 @@
+{
+    "trafficanalyzerApp": {
+        "videoDirectionRecord" : {
+            "home": {
+                "title": "Video Direction Records",
+                "createLabel": "Create a new Video Direction Record",
+                "createOrEditLabel": "Create or edit a Video Direction Record"
+            },
+            "created": "A new Video Direction Record is created with identifier {{ param }}",
+            "updated": "A Video Direction Record is updated with identifier {{ param }}",
+            "deleted": "A Video Direction Record is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Video Direction Record {{ id }}?"
+            },
+            "detail": {
+                "title": "Video Direction Record"
+            },
+            "insertDate": "Insert Date",
+            "vehicleType": "Vehicle Type",
+            "duration": "Duration",
+            "speed": "Speed",
+            "videoDirection": "Video Direction"
+        }
+    }
+}

@@ -47,6 +47,18 @@ entity VideoRecord{
 	speed Double
 }
 
+entity VideoDirection{
+	indexValue Long required
+	name String required
+}
+
+entity VideoDirectionRecord{
+	insertDate Instant required
+	vehicleType String required
+	duration Long required
+	speed Double
+}
+
 relationship ManyToOne {
   Location{district} to District
   Camera{location} to Location
@@ -55,14 +67,21 @@ relationship ManyToOne {
 
   VideoLine{video} to Video
   VideoRecord{videoLine} to VideoLine
+
+  VideoDirection{startLine} to VideoLine	
+  VideoDirection{endLine} to VideoLine
+  VideoDirection{video} to Video
+  VideoDirectionRecord{videoDirection} to VideoDirection	
 }
 
 
 paginate District with pagination
 paginate Location with pagination
 paginate Camera with pagination
+paginate VideoDirection with pagination
 paginate Record with pagination
 paginate Line with pagination
 paginate Video with pagination
 paginate VideoLine with pagination
 paginate VideoRecord with pagination
+paginate VideoDirectionRecord with pagination
