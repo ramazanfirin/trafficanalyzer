@@ -29,22 +29,34 @@
                 </p>
             </div>
         </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="trafficanalyzerApp.videoDirection.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                    ng-model="vm.videoDirection.name"
+                    required/>
+            <div ng-show="editForm.name.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.name.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
 
         <div class="form-group">
             <label data-translate="trafficanalyzerApp.videoDirection.startLine" for="field_startLine">Start Line</label>
-            <select class="form-control" id="field_startLine" name="startLine" ng-model="vm.videoDirection.startLine" ng-options="videoLine as videoLine.id for videoLine in vm.videolines track by videoLine.id">
+            <select class="form-control" id="field_startLine" name="startLine" ng-model="vm.videoDirection.startLine" ng-options="videoLine as videoLine.name for videoLine in vm.videolines track by videoLine.id">
                 <option value=""></option>
             </select>
         </div>
         <div class="form-group">
             <label data-translate="trafficanalyzerApp.videoDirection.endLine" for="field_endLine">End Line</label>
-            <select class="form-control" id="field_endLine" name="endLine" ng-model="vm.videoDirection.endLine" ng-options="videoLine as videoLine.id for videoLine in vm.videolines track by videoLine.id">
+            <select class="form-control" id="field_endLine" name="endLine" ng-model="vm.videoDirection.endLine" ng-options="videoLine as videoLine.name for videoLine in vm.videolines track by videoLine.id">
                 <option value=""></option>
             </select>
         </div>
         <div class="form-group">
             <label data-translate="trafficanalyzerApp.videoDirection.video" for="field_video">Video</label>
-            <select class="form-control" id="field_video" name="video" ng-model="vm.videoDirection.video" ng-options="video as video.id for video in vm.videos track by video.id">
+            <select class="form-control" id="field_video" name="video" ng-model="vm.videoDirection.video" ng-options="video as video.name for video in vm.videos track by video.id">
                 <option value=""></option>
             </select>
         </div>

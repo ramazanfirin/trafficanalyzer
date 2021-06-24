@@ -20,6 +20,7 @@
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                     <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="indexValue"><span data-translate="trafficanalyzerApp.videoDirection.indexValue">Index Value</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="name"><span data-translate="trafficanalyzerApp.videoDirection.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="startLine.id"><span data-translate="trafficanalyzerApp.videoDirection.startLine">Start Line</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="endLine.id"><span data-translate="trafficanalyzerApp.videoDirection.endLine">End Line</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="video.id"><span data-translate="trafficanalyzerApp.videoDirection.video">Video</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -30,14 +31,15 @@
                 <tr ng-repeat="videoDirection in vm.videoDirections track by videoDirection.id">
                     <td><a ui-sref="video-direction-detail({id:videoDirection.id})">{{videoDirection.id}}</a></td>
                     <td>{{videoDirection.indexValue}}</td>
+                    <td>{{videoDirection.name}}</td>
                     <td>
-                        <a ui-sref="video-line-detail({id:videoDirection.startLine.id})">{{videoDirection.startLine.id}}</a>
+                        <a ui-sref="video-line-detail({id:videoDirection.startLine.id})">{{videoDirection.startLine.name}}</a>
                     </td>
                     <td>
-                        <a ui-sref="video-line-detail({id:videoDirection.endLine.id})">{{videoDirection.endLine.id}}</a>
+                        <a ui-sref="video-line-detail({id:videoDirection.endLine.id})">{{videoDirection.endLine.name}}</a>
                     </td>
                     <td>
-                        <a ui-sref="video-detail({id:videoDirection.video.id})">{{videoDirection.video.id}}</a>
+                        <a ui-sref="video-detail({id:videoDirection.video.id})">{{videoDirection.video.name}}</a>
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">

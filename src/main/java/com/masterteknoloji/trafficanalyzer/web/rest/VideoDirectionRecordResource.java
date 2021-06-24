@@ -7,6 +7,9 @@ import com.masterteknoloji.trafficanalyzer.repository.VideoDirectionRecordReposi
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.VideoRecordQueryVM;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.VideoRecordSummaryVM;
+
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,10 +21,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -124,5 +132,36 @@ public class VideoDirectionRecordResource {
         log.debug("REST request to delete VideoDirectionRecord : {}", id);
         videoDirectionRecordRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+    
+    
+    @GetMapping("/video-direction-records/getLineData/{videoId}/{directionIndex}")
+    @Timed
+    public ResponseEntity<List<VideoRecordQueryVM>> getAllDatagetAllData(@PathVariable Long videoId,@PathVariable Long directionIndex) {
+        log.debug("REST request to get VideoRecord : {}", videoId);
+        List<VideoRecordQueryVM> result = new ArrayList<VideoRecordQueryVM>();
+        
+        List<VideoDirectionRecord> videoRecords = videoDirectionRecordRepository.findIntersectionData(videoId,directionIndex);
+        for (VideoDirectionRecord map : videoRecords) {
+        	result.add(new VideoRecordQueryVM(map.getId(), map.getVehicleType(),map.getInsertDate(), map.getVideoDirection().getIndexValue(),
+        			map.getDuration(),0d,map.getVideoDirection().getName()));
+        }
+      
+        
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
+    }
+    
+    
+    @GetMapping("/video-direction-records/getAllDataSummary/{id}")
+    @Timed
+    public ResponseEntity<List<VideoRecordSummaryVM>> getAllDataSummary(@PathVariable Long id) {
+        log.debug("REST request to get VideoRecord : {}", id);
+        List<VideoRecordSummaryVM> result = new ArrayList<VideoRecordSummaryVM>();
+        
+        Iterable<Map<String,Object>> videoRecords = videoDirectionRecordRepository.getSummaryReport(id);
+        for (Map<String, Object> map : videoRecords) {
+        	result.add(new VideoRecordSummaryVM((BigInteger)map.get("counts"), (String)map.get("videoname"),(String)map.get("directionname")));
+		}
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
     }
 }

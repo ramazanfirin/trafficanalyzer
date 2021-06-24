@@ -1,0 +1,36 @@
+<div>
+    <h2 data-translate="">Video Rapor Ozet</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+               
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span data-translate="">Video Adi</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="insertDate"><span data-translate="">Yon</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="vehicleType"><span data-translate="">Sayi</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="videoRecord in vm.videoRecordsSummary ">
+                    <td>{{videoRecord.videoName}}</td>
+                    <td>{{videoRecord.directionName}}</td>
+                    <td>{{videoRecord.count}}</td>
+                    
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+        <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
+    </div>
+</div>

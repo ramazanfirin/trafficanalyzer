@@ -27,6 +27,10 @@ public class VideoDirection implements Serializable {
     @Column(name = "index_value", nullable = false)
     private Long indexValue;
 
+    @NotNull
+    @Column(name = "name", nullable = false)
+    private String name;
+
     @ManyToOne
     private VideoLine startLine;
 
@@ -56,6 +60,19 @@ public class VideoDirection implements Serializable {
 
     public void setIndexValue(Long indexValue) {
         this.indexValue = indexValue;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public VideoDirection name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public VideoLine getStartLine() {
@@ -123,6 +140,7 @@ public class VideoDirection implements Serializable {
         return "VideoDirection{" +
             "id=" + getId() +
             ", indexValue=" + getIndexValue() +
+            ", name='" + getName() + "'" +
             "}";
     }
 }

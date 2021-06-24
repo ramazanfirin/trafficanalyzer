@@ -16,6 +16,7 @@
                 "title": "Video Direction"
             },
             "indexValue": "Index Value",
+            "name": "Name",
             "startLine": "Start Line",
             "endLine": "End Line",
             "video": "Video"

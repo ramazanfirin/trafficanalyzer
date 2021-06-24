@@ -41,6 +41,9 @@ public class VideoDirectionResourceIntTest {
     private static final Long DEFAULT_INDEX_VALUE = 1L;
     private static final Long UPDATED_INDEX_VALUE = 2L;
 
+    private static final String DEFAULT_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_NAME = "BBBBBBBBBB";
+
     @Autowired
     private VideoDirectionRepository videoDirectionRepository;
 
@@ -79,7 +82,8 @@ public class VideoDirectionResourceIntTest {
      */
     public static VideoDirection createEntity(EntityManager em) {
         VideoDirection videoDirection = new VideoDirection()
-            .indexValue(DEFAULT_INDEX_VALUE);
+            .indexValue(DEFAULT_INDEX_VALUE)
+            .name(DEFAULT_NAME);
         return videoDirection;
     }
 
@@ -104,6 +108,7 @@ public class VideoDirectionResourceIntTest {
         assertThat(videoDirectionList).hasSize(databaseSizeBeforeCreate + 1);
         VideoDirection testVideoDirection = videoDirectionList.get(videoDirectionList.size() - 1);
         assertThat(testVideoDirection.getIndexValue()).isEqualTo(DEFAULT_INDEX_VALUE);
+        assertThat(testVideoDirection.getName()).isEqualTo(DEFAULT_NAME);
     }
 
     @Test
@@ -145,6 +150,24 @@ public class VideoDirectionResourceIntTest {
 
     @Test
     @Transactional
+    public void checkNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = videoDirectionRepository.findAll().size();
+        // set the field null
+        videoDirection.setName(null);
+
+        // Create the VideoDirection, which fails.
+
+        restVideoDirectionMockMvc.perform(post("/api/video-directions")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(videoDirection)))
+            .andExpect(status().isBadRequest());
+
+        List<VideoDirection> videoDirectionList = videoDirectionRepository.findAll();
+        assertThat(videoDirectionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllVideoDirections() throws Exception {
         // Initialize the database
         videoDirectionRepository.saveAndFlush(videoDirection);
@@ -154,7 +177,8 @@ public class VideoDirectionResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(videoDirection.getId().intValue())))
-            .andExpect(jsonPath("$.[*].indexValue").value(hasItem(DEFAULT_INDEX_VALUE.intValue())));
+            .andExpect(jsonPath("$.[*].indexValue").value(hasItem(DEFAULT_INDEX_VALUE.intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
     }
 
     @Test
@@ -168,7 +192,8 @@ public class VideoDirectionResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(videoDirection.getId().intValue()))
-            .andExpect(jsonPath("$.indexValue").value(DEFAULT_INDEX_VALUE.intValue()));
+            .andExpect(jsonPath("$.indexValue").value(DEFAULT_INDEX_VALUE.intValue()))
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()));
     }
 
     @Test
@@ -191,7 +216,8 @@ public class VideoDirectionResourceIntTest {
         // Disconnect from session so that the updates on updatedVideoDirection are not directly saved in db
         em.detach(updatedVideoDirection);
         updatedVideoDirection
-            .indexValue(UPDATED_INDEX_VALUE);
+            .indexValue(UPDATED_INDEX_VALUE)
+            .name(UPDATED_NAME);
 
         restVideoDirectionMockMvc.perform(put("/api/video-directions")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -203,6 +229,7 @@ public class VideoDirectionResourceIntTest {
         assertThat(videoDirectionList).hasSize(databaseSizeBeforeUpdate);
         VideoDirection testVideoDirection = videoDirectionList.get(videoDirectionList.size() - 1);
         assertThat(testVideoDirection.getIndexValue()).isEqualTo(UPDATED_INDEX_VALUE);
+        assertThat(testVideoDirection.getName()).isEqualTo(UPDATED_NAME);
     }
 
     @Test

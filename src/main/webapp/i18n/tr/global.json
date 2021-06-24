@@ -18,8 +18,10 @@
                 "videoRecord": "Video Rapor",
                 "videoRecordSummary": "Video Rapor Özet",
                 "videoRecord": "Video Record",
+                "videoRecordSummary": "Araç Sayım Sonuçları",
                 "videoDirection": "Video Direction",
                 "videoDirectionRecord": "Video Direction Record",
+                "videoDirectionRecordSummary": "Kavşak Analiz Sonuçları",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

@@ -42,5 +42,15 @@
         </createTable>
         
     </changeSet>
+    
+    <changeSet id="20210622051703-11" author="jhipster">
+    
+    	<addColumn tableName="video_direction">
+    		            <column name="name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+    	</addColumn>
+    </changeSet>
+    
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

@@ -46,7 +46,7 @@
 
         <div class="form-group">
             <label data-translate="trafficanalyzerApp.videoLine.video" for="field_video">Video</label>
-            <select class="form-control" id="field_video" name="video" ng-model="vm.videoLine.video" ng-options="video as video.id for video in vm.videos track by video.id">
+            <select class="form-control" id="field_video" name="video" ng-model="vm.videoLine.video" ng-options="video as video.name for video in vm.videos track by video.id">
                 <option value=""></option>
             </select>
         </div>

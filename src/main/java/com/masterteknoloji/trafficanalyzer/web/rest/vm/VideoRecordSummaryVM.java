@@ -7,6 +7,8 @@ public class VideoRecordSummaryVM {
 	Object date;
 	String type;
 	BigInteger count;
+	String videoName;
+	String directionName;
 	
 	public VideoRecordSummaryVM() {
 		super();
@@ -20,7 +22,12 @@ public class VideoRecordSummaryVM {
 		this.count = count;
 	}
 
-
+	public VideoRecordSummaryVM(BigInteger count, String videoName, String directionName) {
+		super();
+		this.count = count;
+		this.videoName = videoName;
+		this.directionName = directionName;
+	}
 
 
 	public Object getDate() {
@@ -45,6 +52,22 @@ public class VideoRecordSummaryVM {
 
 	public void setCount(BigInteger count) {
 		this.count = count;
+	}
+
+	public String getVideoName() {
+		return videoName;
+	}
+
+	public void setVideoName(String videoName) {
+		this.videoName = videoName;
+	}
+
+	public String getDirectionName() {
+		return directionName;
+	}
+
+	public void setDirectionName(String directionName) {
+		this.directionName = directionName;
 	}
 	
 		

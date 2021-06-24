@@ -11,6 +11,7 @@
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
+             'getSummary': { method: 'GET', isArray: true,url:'/api/video-direction-records/getAllDataSummary/9'},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

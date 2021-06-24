@@ -213,13 +213,13 @@ public class VideoRecordResource {
     public ResponseEntity<Void> parseData() throws FileNotFoundException, IOException, CsvException, ParseException {
 		
 //    	Video video = videoRepository.findOne(2l);
-    	VideoLine gultepeKartal = videoLineRepository.findOne(3l);
-    	VideoLine kartalGultepe = videoLineRepository.findOne(4l);
+    	VideoLine gultepeKartal = videoLineRepository.findOne(15l);
+    	VideoLine kartalGultepe = videoLineRepository.findOne(16l);
     	
     	List<VideoRecord> tempList = new ArrayList<VideoRecord>();
     	
     	int i =0;
-    	try (CSVReader reader = new CSVReader(new FileReader("D:\\KBB\\inpt_1_2_lines_updated.csv"))) {
+    	try (CSVReader reader = new CSVReader(new FileReader("D:\\KBB\\gultepe\\gece.csv"))) {
     	      List<String[]> r = reader.readAll();
     	      for (String[] strings : r) {
 				
@@ -268,11 +268,11 @@ public class VideoRecordResource {
     	List<VideoDirectionRecord> tempList = new ArrayList<VideoDirectionRecord>();
     	
     	int i =0;
-    	try (CSVReader reader = new CSVReader(new FileReader("D:\\KBB\\inpt_1_2_lines_updated.csv"))) {
+    	try (CSVReader reader = new CSVReader(new FileReader("D:\\KBB\\intersection\\22-06-2021_nigth.csv"))) {
     	      List<String[]> r = reader.readAll();
     	      for (String[] strings : r) {
 				
-    	    	if(strings[2].equals("person"))
+    	    	if(strings[1].equals("person"))
     	    		continue;
     	    	  
     	    	VideoDirectionRecord videoRecord = new VideoDirectionRecord();
@@ -280,12 +280,15 @@ public class VideoRecordResource {
 				videoRecord.setDuration(prepareDuration(strings[0]));
 				videoRecord.setVehicleType(strings[1]);
 				
-				VideoDirection videoDirection = videoDirectionRepository.findOne(new Long(strings[2]));
+				String regionId = strings[2];
+				String vehicleId = strings[3];
+				String videoId = strings[4];
+				VideoDirection videoDirection = videoDirectionRepository.findAllByVideoIdAndRegionId(new Long(videoId),new Long(regionId));
 				if(videoDirection==null)
 					throw new RuntimeException("directionId bulunamadı");
 					
 				videoRecord.setVideoDirection(videoDirection);
-				videoRecord.setSpeed(prepareSpeed(strings[3]));
+				//videoRecord.setSpeed(prepareSpeed(strings[3]));
 				videoDirectionRecordRepository.save(videoRecord);
 				i++;
 				System.out.println(i+" bitti");
